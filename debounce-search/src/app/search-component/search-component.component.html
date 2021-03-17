@@ -1,0 +1,45 @@
+<div style="margin: 50px;">
+
+  <div class="container" style="text-align:center">
+    <div class="row">
+      <div class="text-center">
+        <h1>Search Event</h1>
+        <input type="text" #discoverySearchInput class="form-control" placeholder="Search Discovery" />
+        <div class="icon-container">
+          <i class="loader"></i>
+        </div>
+        <div class="no-result-found" *ngIf="noResultFlag">
+          <h5>We couldn't find any match for <em>{{searchText}}</em></h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="center row">
+      <ng-container *ngIf="apiResponse['Response'] == 'False'; else elseTemplate">
+        <div class="col-12 text-center">
+          <div class="alert alert-danger" role="alert">
+            {{apiResponse['Error']}}
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #elseTemplate>
+        <div *ngFor="let event of apiResponse._embedded.events">
+          <div class="property-card">
+            <a href="{{event.url}}" target="_blank">
+              <div class="property-image" [ngStyle]="{'background-image':'url(' + event.images[0].url + ')'}">
+                <div class="property-image-title">
+                  <!-- Optional <h5>Card Title</h5> If you want it, turn on the CSS also. -->
+                </div>
+              </div></a>
+            <div class="property-description">
+              <h5> {{event.name}} </h5>
+              <p>Vennu: {{event._embedded.venues[0].address.line1}}</p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+</div>
